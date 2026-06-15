@@ -7,7 +7,7 @@ const app = express();
 const client = new Anthropic(); // reads ANTHROPIC_API_KEY from env
 
 app.use(express.json());
-app.use(express.static(path.join(__dirname, '../public')));
+app.use(express.static(path.join(process.cwd(), 'dist/public')));
 
 interface ChatMessage {
   role: 'user' | 'assistant';
@@ -122,7 +122,7 @@ app.post('/api/chat', async (req, res) => {
 });
 
 app.get('*', (_req, res) => {
-  res.sendFile(path.join(__dirname, '../public/index.html'));
+  res.sendFile(path.join(process.cwd(), 'dist/public/index.html'));
 });
 
 const PORT = parseInt(process.env.PORT ?? '3000', 10);
