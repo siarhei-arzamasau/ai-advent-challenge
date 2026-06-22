@@ -86,6 +86,20 @@ data/                   Server-side JSON stores (gitignored)
 
 The client is bundled by esbuild (`react`/`react-dom` 19); no separate framework or dev server is involved.
 
+## Testing
+
+Tests run on [Vitest](https://vitest.dev/):
+
+```bash
+pnpm test         # run the suite once
+pnpm test:watch   # watch mode
+```
+
+- **Frontend** — pure helpers (Markdown rendering, date/strategy formatting, slash-command parsing) plus React component tests via Testing Library + jsdom (`TaskBar`, `Transcript`, `InputBar`).
+- **Backend** — the Express API is exercised with Supertest against the exported `app` (sessions, memory, profiles, invariants CRUD + validation), using a temporary `DATA_DIR` so tests never touch `data/`.
+
+Most tests run in the Node environment; component test files opt into jsdom with a `// @vitest-environment jsdom` docblock.
+
 ## Commands
 
 Type these slash commands in the message input. They are handled locally in the browser and are **not** sent to Claude. Run `/help` in the app to see the same list.

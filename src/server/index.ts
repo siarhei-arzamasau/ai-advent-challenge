@@ -62,7 +62,7 @@ interface ChatSettings {
   stopSequences?: string[];
 }
 
-const DATA_DIR = path.join(process.cwd(), 'data');
+const DATA_DIR = process.env.DATA_DIR ?? path.join(process.cwd(), 'data');
 const HISTORY_FILE = path.join(DATA_DIR, 'chat-history.json');
 const LONG_TERM_MEMORY_FILE = path.join(DATA_DIR, 'long-term-memory.json');
 const PROFILES_FILE = path.join(DATA_DIR, 'profiles.json');
@@ -428,6 +428,11 @@ app.get('*', (_req, res) => {
 });
 
 const PORT = parseInt(process.env.PORT ?? '3000', 10);
-app.listen(PORT, () => {
-  console.log(`Server running at http://localhost:${PORT}`);
-});
+// Don't bind a port when imported by the test runner — tests drive `app` directly.
+if (!process.env.VITEST) {
+  app.listen(PORT, () => {
+    console.log(`Server running at http://localhost:${PORT}`);
+  });
+}
+
+export { app };
