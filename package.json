@@ -1,7 +1,7 @@
 {
-  "name": "claude-chat",
+  "name": "ai-agent-based-on-claude",
   "version": "1.0.0",
-  "description": "Chat application powered by Claude via the Anthropic API",
+  "description": "AI Agent based on Claude via the Anthropic API",
   "engines": {
     "node": ">=24"
   },

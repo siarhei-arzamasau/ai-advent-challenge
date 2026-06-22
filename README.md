@@ -1,4 +1,4 @@
-# Claude Chat
+# AI Agent based on Claude
 
 A streaming chat application powered by Claude via the Anthropic API. Built with a Node.js/Express backend and a React 19 frontend (TypeScript, bundled with esbuild).
 

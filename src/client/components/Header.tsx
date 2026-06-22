@@ -21,7 +21,7 @@ export function Header({ s, a }: { s: Store; a: ChatActions }) {
             <svg className="logo-icon" viewBox="0 0 24 24" fill="currentColor">
               <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
             </svg>
-            <span>Claude</span>
+            <span>AI Agent based on Claude</span>
           </div>
         </div>
         <div className="header-actions">
