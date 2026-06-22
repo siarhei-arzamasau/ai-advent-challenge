@@ -1,6 +1,23 @@
 # Claude Chat
 
-A streaming chat application powered by Claude via the Anthropic API. Built with Node.js/Express backend and a vanilla TypeScript frontend.
+A streaming chat application powered by Claude via the Anthropic API. Built with a Node.js/Express backend and a React 19 frontend (TypeScript, bundled with esbuild).
+
+## Features
+
+- **Streaming responses** over SSE, with a live **stop/interrupt** button — interrupting keeps any partial output so you can correct or continue.
+- **Conversation strategies** (selectable per chat in Settings):
+  - *Default* — full history every request.
+  - *Sliding Window* — only the last *N* Q&A pairs are sent.
+  - *Sticky Facts* — key facts are extracted and pinned into the system prompt.
+  - *Branching* — fork a conversation into parallel branches and compare them side by side.
+- **Three-layer memory** — short-term (this dialog), working (this session/task), and long-term (global). All layers are injected into the system prompt.
+- **Profiles** — reusable response styles applied globally to every dialog.
+- **Invariants** — global hard constraints the assistant must check against and never violate.
+- **Staged tasks** — run a task through a planning → execution → validation → done state machine, pausing for your review at each step.
+- **Adjustable settings** — model, max tokens, temperature, and stop sequences.
+- **Persistent history** — sessions, long-term memory, profiles, and invariants are stored on the server as JSON.
+
+Most of these are driven by slash [commands](#commands).
 
 ## Prerequisites
 
@@ -38,7 +55,36 @@ pnpm build
 pnpm start
 ```
 
-`pnpm build` compiles the TypeScript server and bundles the client. `pnpm start` runs the compiled output.
+`pnpm build` compiles the TypeScript server (`tsc`) and bundles the React client (`esbuild`). `pnpm start` runs the compiled output.
+
+Type-check the client without emitting with:
+
+```bash
+pnpm typecheck:client
+```
+
+## Project structure
+
+```
+src/
+  server/
+    index.ts            Express server: chat SSE proxy + JSON persistence
+  client/
+    index.tsx           React entry (mounts <App/>)
+    App.tsx             Top-level layout
+    useChat.ts          State + actions store (streaming, commands, tasks, sessions)
+    components/         UI: Header, Sidebar, SettingsPanel, SidePanels,
+                        TaskBar, BranchBar, Transcript, InputBar, CompareModal
+    constants.ts        Commands, models, strategies, task stages
+    markdown.ts         Minimal Markdown → HTML renderer
+    format.ts           Date / strategy label helpers
+    types.ts            Shared types
+    index.html          HTML shell (mounts #root)
+    style.css           Styles
+data/                   Server-side JSON stores (gitignored)
+```
+
+The client is bundled by esbuild (`react`/`react-dom` 19); no separate framework or dev server is involved.
 
 ## Commands
 
